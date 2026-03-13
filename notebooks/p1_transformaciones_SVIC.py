@@ -17,6 +17,14 @@ app = marimo.App()
 @app.cell
 def _(mo):
     mo.md(r"""
+    # <p style="text-align: center;">Material adicional práctico de AnSyS e IPS</p>
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
     # Desplazamiento y escalamiento de una SVIC
     Considere la transformación lineal $x(at+b)$. Experimente como la señal $x(t) = \sqcap (t)$ varía según la transformación aplicada.
 
