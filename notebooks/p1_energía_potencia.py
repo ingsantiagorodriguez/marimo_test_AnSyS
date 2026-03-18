@@ -20,7 +20,13 @@ def _(mo):
     # <p style="text-align: center;">Material adicional práctico de AnSyS e IPS #2</p>
     ### <p style="text-align: center;">Santiago Rodríguez</p>
     #### <p style="text-align: center;">Facultad de Ingeniería - UNLP</p>
+    """)
+    return
 
+
+@app.cell
+def _(mo):
+    mo.md(r"""
     # Energía y potencia de SVID y SVIC
     En este ejercicio calcularemos la energía y potencia, siempre que ambas sean finitas, para las señales del ejercicio 5 de la P1 utilizando python.
     Comenzaremos por las SVIDS, ya que las definiciones son más simples.
@@ -32,22 +38,27 @@ def _(mo):
     * Para estimar en python la energía de una señal discreta, tendremos que hacer una aproximación, ya que no tenemos la secuencia de $-\infty$ a $\infty$.
 
     Entonces:
-    $\begin{equation}
+    $$
+    \begin{equation*}
     E = \sum_{n=-\infty}^{\infty} |x[n]|^{2} \approx \sum_{n=N_1}^{N_2} |x[n]|^{2}
-    \end{equation}$
+    \end{equation*}
+    $$
 
     Para la potencia, que se define como $P = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^{2}$, también tendremos que hacer la misma aproximación.
 
     Entonces:
-    $\begin{equation}
+    $$
+    \begin{equation*}
     P = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^{2} \approx \frac{1}{N_2 - N_1} \sum_{n=N_1}^{N_2} |x[n]|^{2}
-    \end{equation}$
+    \end{equation*}
+    $$
 
     * Si la secuencia es periódica (de período $N$), el cálculo, que se puede resolver de **forma exacta**, cambia a:
-
-    $\begin{equation}
+    $$
+    \begin{equation*}
     P = \frac{1}{N}\sum_{n=0}^{N-1} |x[n]|^{2}
-    \end{equation}$
+    \end{equation*}
+    $$
 
     ## Caso SVIC:
 
@@ -59,10 +70,11 @@ def _(mo):
     * Por otra parte, consideraremos que tenemos suficientes puntos de la señal, ya que no es posible tener puntos desde $-\infty$ a $\infty$.
 
     Entonces:
-
-    $\begin{equation}
+    $$
+    \begin{equation*}
     E = \int_{-\infty}^{\infty} |x(t)|^{2} \, dt \approx \sum_{n = N_1}^{N_2} |x[n]|^{2} \, Ts
-    \end{equation}$
+    \end{equation*}
+    $$
 
     En cuanto a su potencia, la misma es $P = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^{T} |x(t)|^{2} \, dt$.
 
@@ -73,15 +85,19 @@ def _(mo):
 
     Entonces:
 
-    $\begin{equation}
+    $$
+    \begin{equation*}
     P = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^{T} |x(t)|^{2} \, dt \approx \frac{1}{N_2-N_1} \sum_{n=N_1}^{N_2} |x[n]|^{2} \, Ts
-    \end{equation}$
+    \end{equation*}
+    $$
 
     Finalmente, si la señal es periódica (de período $T_0$), sabemos que su energía será $\infty$, y su potencia podremos calcularla y estimarla de la siguiente manera:
 
-    $\begin{equation}
+    $$
+    \begin{equation*}
     P = \frac{1}{T_{0}} \int_{T_{0}} |x(t)|^{2} \, dt \approx \frac{1}{T_{0}} \sum_{n=0}^{[T_0 / T_s]-1} |x[n]|^{2} \, Ts
-    \end{equation}$
+    \end{equation*}
+    $$
 
     ## Conclusiones:
 
