@@ -17,6 +17,10 @@ app = marimo.App()
 @app.cell
 def _(mo):
     mo.md(r"""
+    # <p style="text-align: center;">Material adicional práctico de AnSyS e IPS #2</p>
+    ### <p style="text-align: center;">Santiago Rodríguez</p>
+    #### <p style="text-align: center;">Facultad de Ingeniería - UNLP</p>
+
     # Energía y potencia de SVID y SVIC
     En este ejercicio calcularemos la energía y potencia, siempre que ambas sean finitas, para las señales del ejercicio 5 de la P1 utilizando python.
     Comenzaremos por las SVIDS, ya que las definiciones son más simples.
@@ -32,16 +36,14 @@ def _(mo):
     E = \sum_{n=-\infty}^{\infty} |x[n]|^{2} \approx \sum_{n=N_1}^{N_2} |x[n]|^{2}
     \end{equation}$
 
-    A su vez, la potencia, que se define como $P = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^{2}$
-
-    * Para estimar en python la potencia de una señal discreta, tendremos que hacer la misma aproximación.
+    Para la potencia, que se define como $P = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^{2}$, también tendremos que hacer la misma aproximación.
 
     Entonces:
     $\begin{equation}
-    P = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^{2} \approx \frac{1}{N_1 + N_2} \sum_{n=N_1}^{N_2} |x[n]|^{2}
+    P = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^{2} \approx \frac{1}{N_2 - N_1} \sum_{n=N_1}^{N_2} |x[n]|^{2}
     \end{equation}$
 
-    * Si la secuencia es periódica (de período $N$), el cálculo, que se puede resolver de **forma exacta** cambia a:
+    * Si la secuencia es periódica (de período $N$), el cálculo, que se puede resolver de **forma exacta**, cambia a:
 
     $\begin{equation}
     P = \frac{1}{N}\sum_{n=0}^{N-1} |x[n]|^{2}
@@ -53,13 +55,13 @@ def _(mo):
 
     * Para estimar en python la energía de una señal continua, tendremos que hacer aproximaciones.
     * Por un lado, aproximaremos la integral con una suma de Riemann.
-    * Para ello, consideraremos en realidad una señal $x[n]$ que creada a partir de discretizar la señal continua cada $T_s$ segundos.
+    * Para ello, consideraremos en realidad una señal $x[n]$, que ha sido creada a partir de discretizar la señal continua cada $T_s$ segundos.
     * Por otra parte, consideraremos que tenemos suficientes puntos de la señal, ya que no es posible tener puntos desde $-\infty$ a $\infty$.
 
     Entonces:
 
     $\begin{equation}
-    E = \int_{-\infty}^{\infty} |x(t)|^{2} \, dt \approx \sum_{k = N_1}^{N_2} |x[n]|^{2} \, Ts
+    E = \int_{-\infty}^{\infty} |x(t)|^{2} \, dt \approx \sum_{n = N_1}^{N_2} |x[n]|^{2} \, Ts
     \end{equation}$
 
     En cuanto a su potencia, la misma es $P = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^{T} |x(t)|^{2} \, dt$.
@@ -72,17 +74,20 @@ def _(mo):
     Entonces:
 
     $\begin{equation}
-    P = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^{T} |x(t)|^{2} \, dt \approx \frac{1}{N_1+N_2} \sum_{n=N_1}^{N_2} |x[n]|^{2} \, Ts
+    P = \lim_{T \to \infty} \frac{1}{2T} \int_{-T}^{T} |x(t)|^{2} \, dt \approx \frac{1}{N_2-N_1} \sum_{n=N_1}^{N_2} |x[n]|^{2} \, Ts
     \end{equation}$
 
-    Finalmente, si la señal es periódica, sabemos que su energía será $\infty$, y su potencia podremos calcularla y estimarla de la siguiente manera:
+    Finalmente, si la señal es periódica (de período $T_0$), sabemos que su energía será $\infty$, y su potencia podremos calcularla y estimarla de la siguiente manera:
 
     $\begin{equation}
     P = \frac{1}{T_{0}} \int_{T_{0}} |x(t)|^{2} \, dt \approx \frac{1}{T_{0}} \sum_{n=0}^{[T_0 / T_s]-1} |x[n]|^{2} \, Ts
     \end{equation}$
 
-    * Debe tenerse en cuenta, que al no poder generar señales de $-\infty$ a $\infty$, lo que calcularemos **siempre** será una aproximación.
-    * También es cierto que si la aproximación es buena, los resultados deberían asemejarse con los obtenidos *a mano*.
+    ## Conclusiones:
+
+    * Debe tenerse en cuenta que al no poder generar señales de $-\infty$ a $\infty$, lo que calcularemos **siempre** será una aproximación.
+    * Para señales continuas además tendremos que discretizar la variable independiente $t$ utilizando un paso $T_s$ (convenientemente pequeño).
+    * Si las aproximaciones son adecuadas, los resultados obtenidos por las estimaciones denerían ser similares a los obtenidos *a mano*.
     """)
     return
 
@@ -92,10 +97,10 @@ def _(escalon, mo, np):
     from numpy import pi
     opciones = {
         "i) u(t)": lambda t: escalon(t),
-        "ii) A sen(2π f_0 t + π/3)": lambda t: np.sin(2*pi*t + pi/3),
+        "ii) 4 sen(2πt + π/3)": lambda t: 4*np.sin(2*pi*t + pi/3),
         "iii) 2 e^{j6π t}": lambda t: 2*np.exp(6j*pi*t),
         "iv) (0.5)^n u[n]": lambda n: ((0.5)**n)*escalon(n),
-        "v) ∑ 3 δ[n -3k]": lambda n: 3.0*(n % 3 == 0),
+        "v) ∑ 3 δ[n - 3k]": lambda n: 3.0*(n % 3 == 0),
     }
 
     dropdown = mo.ui.dropdown(options=opciones, value="i) u(t)")
@@ -142,10 +147,10 @@ def _(
     from matplotlib.pylab import plot
     tipos = {
         "i) u(t)": "continua",
-        "ii) A sen(2π f_0 t + π/3)": "continua",
+        "ii) 4 sen(2πt + π/3)": "continua",
         "iii) 2 e^{j6π t}": "continua",
         "iv) (0.5)^n u[n]": "discreta",
-        "v) ∑ 3 δ[n -3k]": "discreta",
+        "v) ∑ 3 δ[n - 3k]": "discreta",
     }
 
     # Obtener valores actuales de los controles
@@ -179,16 +184,13 @@ def _(
                 ]
             )
             # Gráfica: parte real e imaginaria
-            fig, ax = plt.subplots()
-            plot_completo(t, np.real(x), hold=True, maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
+            fig = plot_completo(t, np.real(x), maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
             font_size=FONT_SIZE, xlabel='$t$',
             title='Ej 5 - P1', line_style='r', line_width=2, marker_size=3)
             plot_completo(t, np.imag(x), hold=True, maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
             font_size=FONT_SIZE, xlabel='$t$',
             title='Ej 5 - P1', line_style='b', line_width=2, marker_size=3)
-            ax.plot(t, x.real, label='Real')
-            ax.plot(t, x.imag, label='Imag')
-            ax.legend()
+            plt.legend(['Real','Imag'])
         else:
             panel = panel_resultados(
             f"Resultados para t ∈ [{t_min:.2f}, {t_max:.2f}]",
@@ -198,8 +200,7 @@ def _(
                 ("Valor medio", f"{valor_medio.real:.4f} + {valor_medio.imag:.4f}j"),
                 ]
             )
-            fig, ax = plt.subplots()
-            plot_completo(t, x, hold=True, maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
+            fig = plot_completo(t, x, maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
             font_size=FONT_SIZE, xlabel='$t$',
             title='Ej 5 - P1', line_style='b', line_width=2, marker_size=3)
             plt.legend([clave_seleccionada])
@@ -226,10 +227,13 @@ def _(
                 ("Valor medio", f"{valor_medio.real:.4f} + {valor_medio.imag:.4f}j"),
                 ]
             )
-            fig, ax = plt.subplots()
-            ax.stem(n, x.real, linefmt='b-', markerfmt='bo', basefmt=' ', label='Real')
-            ax.stem(n, x.imag, linefmt='r-', markerfmt='ro', basefmt=' ', label='Imag')
-            ax.legend()
+            fig = stem_completo(n, np.real(x), maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
+            font_size=FONT_SIZE, xlabel='$n$',
+            title='Ej 5 - P1', line_style='r', line_width=2, marker_size=3)
+            plot_completo(n, np.imag(x), hold=True, maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
+            font_size=FONT_SIZE, xlabel='$n$',
+            title='Ej 5 - P1', line_style='b', line_width=2, marker_size=3)
+            plt.legend(['Real','Imag'])
         else:
             panel = panel_resultados(
                 f"Resultados para n ∈ [{n_min}, {n_max}]",
@@ -239,8 +243,7 @@ def _(
                 ("Valor medio", f"{valor_medio.real:.4f} + {valor_medio.imag:.4f}j"),
                 ]
             )
-            fig, ax = plt.subplots()
-            stem_completo(n, x, hold=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
+            fig = stem_completo(n, x, maximize=True, axis_limits=[t_min, t_max, y_min_val, y_max_val],
             font_size=FONT_SIZE, xlabel='$n$',
             title='Ej 5 - P1', line_style='b', line_width=2, marker_size=3)
             plt.legend([clave_seleccionada])
@@ -301,7 +304,7 @@ def _():
     import matplotlib.pyplot as plt
     from public.utils import escalon, plot_completo, stem_completo
 
-    FONT_SIZE = 15
+    FONT_SIZE = 25
     return FONT_SIZE, escalon, mo, np, plot_completo, plt, stem_completo
 
 

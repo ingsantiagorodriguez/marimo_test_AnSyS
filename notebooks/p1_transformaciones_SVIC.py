@@ -17,7 +17,9 @@ app = marimo.App()
 @app.cell
 def _(mo):
     mo.md(r"""
-    # <p style="text-align: center;">Material adicional práctico de AnSyS e IPS</p>
+    # <p style="text-align: center;">Material adicional práctico de AnSyS e IPS #1</p>
+    ### <p style="text-align: center;">Santiago Rodríguez</p>
+    #### <p style="text-align: center;">Facultad de Ingeniería - UNLP</p>
     """)
     return
 
@@ -69,8 +71,8 @@ def _(FONT_SIZE, cajon, invertir_a, plot_completo, plt, slider_a, slider_b, t):
 def _(mo):
     mo.md(r"""
     # Manejo de señales VIC
-    * Una vez realizado el ejercicio 2) de la P1, puede verificar los resultados del trabajo realizado en el cuaderno seleccionando los diferentes incisos del menú desplegable.
-    * Modifique los límites del eje $t$ e $y$ para observar adecuadamente cada transformación.
+    * Una vez realizado el ejercicio 2) de la P1, pueden verificarse los resultados del trabajo realizado en papel seleccionando los diferentes incisos del menú desplegable.
+    * Modifique los límites de los ejes de abscisas y ordenadas para observar adecuadamente cada transformación.
     """)
     return
 
@@ -89,11 +91,7 @@ def _(escalon, mo, tri1):
 
     dropdown = mo.ui.dropdown(options=opciones, value="a) h(t+1)")
     dropdown
-    return dropdown, opciones
 
-
-@app.cell
-def _(mo):
     # Control para límites del eje t (rango completo de -20 a 20)
     t_range = mo.ui.range_slider(
         start=-20, stop=20, step=1, value=(-20, 20),
@@ -105,8 +103,8 @@ def _(mo):
     y_max = mo.ui.number(start=-10, stop=10, step=0.5, value=4, label="y máx")
 
     # Mostramos los controles en una fila
-    mo.hstack([t_range, y_min, y_max], justify="space-around")
-    return t_range, y_max, y_min
+    mo.hstack([dropdown, t_range, y_min, y_max], justify="space-around")
+    return dropdown, opciones, t_range, y_max, y_min
 
 
 @app.cell
