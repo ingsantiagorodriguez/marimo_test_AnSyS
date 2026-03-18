@@ -266,7 +266,7 @@ def _(
 
     # Mostrar gráfica y resultados en una fila
     #mo.hstack([mo.as_html(fig), mo.md(resultados)], justify="start")
-    mo.hstack([mo.as_html(fig), panel], justify="center", gap=5)
+    mo.vstack([panel, mo.as_html(fig)], justify="center", gap=1)
     return
 
 
